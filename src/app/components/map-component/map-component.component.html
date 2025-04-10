@@ -1,0 +1,80 @@
+<div class="map-container at-font">
+
+  <google-map
+  height="100%"
+  width="100%"
+  [center]="center"
+  [zoom]="zoom"
+>
+  <map-marker
+    *ngFor="let place of filteredPlaces"
+    [position]="{ lat: place.latitude, lng: place.longitude }"
+    [title]="place.name"
+    (mapClick)="openInfoWindow(marker, place)"
+    #marker="mapMarker"
+  ></map-marker>
+
+  <map-info-window>
+    <div class="at-font w-270" *ngIf="selectedPlace">
+      <div class="font-md text-color-sec">{{ selectedPlace.name }}</div>
+      <div class="font-sm text-color-pry">
+        
+        <span class="img-span" *ngIf="selectedPlace.type === 'hotel'"> <img class="icon-size mr-6" src="/assets/images/icons/atHotel.svg" alt="hotel"> (Hotel)</span>
+        <span class="img-span" *ngIf="selectedPlace.type === 'restaurant'"> <img class="icon-size mr-6" src="/assets/images/icons/atRestaurant.svg" alt="restaurant"> (Restaurant)</span>
+        <span class="img-span" *ngIf="selectedPlace.type === 'tourist'"> <img class="icon-size mr-6" src="/assets/images/icons/atTourist.svg" alt="tourist"> (Tourist Spot)</span>
+        <span class="img-span" *ngIf="selectedPlace.type === 'hospital'"> <img class="icon-size mr-6" src="/assets/images/icons/atHospital.svg" alt="hospital"> (Hospital)</span>
+        <span class="img-span" *ngIf="selectedPlace.type === 'village'"> <img class="icon-size mr-6" src="/assets/images/icons/atVillage.svg" alt="village"> (Village)</span>
+      </div>
+      <div class="font-sm text-color-pry">{{ selectedPlace.description }}</div>
+
+      <div class="rating-stars">
+        <div class="font-sm text-color-pry mr-6">{{ selectedPlace.ratings }}</div>
+        <ng-container *ngFor="let star of getStarIcons(selectedPlace.ratings)">
+          <img [src]="star" alt="star" class="star-icon" />
+        </ng-container>
+        <div class="font-sm text-color-pry ml-6">({{ selectedPlace.reviewCount }})</div>
+      </div>
+
+      <!-- <button (click)="selectForRouting(selectedPlace)">Route From</button>
+      <button (click)="getDistanceTo(selectedPlace)">Route To</button> -->
+      <div class="mt-1">
+        <button class="pry-btn" (click)="openBookingForm(selectedPlace)">Book Now</button>
+      </div>
+    </div>
+  </map-info-window>
+</google-map>
+
+
+<div class="overlay-buttons">
+  <div class="filter-bar">
+    <input type="text" placeholder="search name " [(ngModel)]="searchTerm" (input)="filterPlaces()" />
+  
+    <select [(ngModel)]="selectedType" (change)="filterPlaces()">
+      <option value="all">All Types</option>
+      <option value="hotel">Hotel</option>
+      <option value="restaurant">Restaurant</option>
+      <option value="tourist">Tourist Spot</option>
+      <option value="hospital">Hospital</option>
+      <option value="village">Village</option>
+    </select>
+  
+    <select [(ngModel)]="selectedRating" (change)="filterPlaces()">
+      <option value="all">All Ratings</option>
+      <option value="4">4.0+</option>
+      <option value="3">3.0+</option>
+      <option value="2">2.0+</option>
+    </select>
+  </div>
+  
+  <div *ngIf="distanceText" class="distance-info">
+    Distance: {{ distanceText }}
+  </div>
+</div>
+
+</div>
+
+
+
+
+
+

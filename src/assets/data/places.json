@@ -1,0 +1,363 @@
+[
+    {
+      "name": "Cliff House Hotel",
+      "type": "hotel",
+      "latitude": 53.3405,
+      "longitude": -6.2549,
+      "description": "Luxury seafront hotel",
+      "ratings": "4.7",
+      "reviewCount": 250
+    },
+    {
+      "name": "Phoenix Park",
+      "type": "tourist",
+      "latitude": 53.355,
+      "longitude": -6.329,
+      "description": "One of the largest city parks in Europe",
+      "ratings": "4.8",
+      "reviewCount": 1500
+    },
+    {
+      "name": "The Winding Stair",
+      "type": "restaurant",
+      "latitude": 53.347,
+      "longitude": -6.263,
+      "description": "Classic Irish dishes",
+      "ratings": "4.5",
+      "reviewCount": 300
+    },
+    {
+      "name": "Dublin Castle",
+      "type": "tourist",
+      "description": "Historic castle in the heart of Dublin.",
+      "latitude": 53.3438,
+      "longitude": -6.2675,
+      "ratings": "4.6",
+      "reviewCount": 1200
+    },
+    {
+      "name": "The Marker Hotel",
+      "type": "hotel",
+      "description": "A luxury hotel in Grand Canal Square.",
+      "latitude": 53.3441,
+      "longitude": -6.2376,
+      "ratings": "4.7",
+      "reviewCount": 800
+    },
+    {
+      "name": "Bunsen Burger",
+      "type": "restaurant",
+      "description": "Popular burger joint.",
+      "latitude": 53.3390,
+      "longitude": -6.2625,
+      "ratings": "4.5",
+      "reviewCount": 600
+    },
+    {
+      "name": "St. Patrick's Cathedral",
+      "type": "tourist",
+      "description": "The largest cathedral in Ireland.",
+      "latitude": 53.3430,
+      "longitude": -6.2675,
+      "ratings": "4.7",
+      "reviewCount": 1800
+    },
+    {
+      "name": "The Alex Dublin",
+      "type": "hotel",
+      "description": "Stylish hotel in the city center.",
+      "latitude": 53.3398,
+      "longitude": -6.2494,
+      "ratings": "4.6",
+      "reviewCount": 700
+    },
+    {
+      "name": "Chapter One",
+      "type": "restaurant",
+      "description": "Michelin-starred restaurant in the Dublin Writers Museum.",
+      "latitude": 53.3498,
+      "longitude": -6.2603,
+      "ratings": "4.9",
+      "reviewCount": 1000
+    },
+    {
+      "name": "Kilmainham Gaol",
+      "type": "tourist",
+      "description": "Historic prison and museum.",
+      "latitude": 53.3420,
+      "longitude": -6.3015,
+      "ratings": "4.8",
+      "reviewCount": 900
+    },
+    {
+      "name": "The Dean Dublin",
+      "type": "hotel",
+      "description": "Trendy hotel with a rooftop bar.",
+      "latitude": 53.3431,
+      "longitude": -6.2632,
+      "ratings": "4.7",
+      "reviewCount": 600
+    },
+    {
+      "name": "The Brazen Head",
+      "type": "restaurant",
+      "description": "Ireland's oldest pub.",
+      "latitude": 53.3439,
+      "longitude": -6.2773,
+      "ratings": "3.2",
+      "reviewCount": 1200
+    },
+    {
+      "name": "The Little Museum of Dublin",
+      "type": "tourist",
+      "description": "A museum dedicated to the history of Dublin.",
+      "latitude": 53.3398,
+      "longitude": -6.2532,
+      "ratings": "4.8",
+      "reviewCount": 800
+    },
+    {
+      "name": "The Fitzwilliam Hotel",
+      "type": "hotel",
+      "description": "Luxury hotel in St. Stephen's Green.",
+      "latitude": 53.3405,
+      "longitude": -6.2580,
+      "ratings": "2.0",
+      "reviewCount": 400
+    },
+    {
+      "name": "The Woollen Mills",
+      "type": "restaurant",
+      "description": "Traditional Irish food in a casual setting.",
+      "latitude": 53.3478,
+      "longitude": -6.2615,
+      "ratings": "3.5",
+      "reviewCount": 400
+    },
+    {
+      "name": "The Abbey Theatre",
+      "type": "tourist",
+      "description": "Ireland's national theatre.",
+      "latitude": 53.3498,
+      "longitude": -6.2603,
+      "ratings": "2.1",
+      "reviewCount": 700
+    },
+    {
+      "name": "The Morrison Hotel",
+      "type": "hotel",
+      "description": "Stylish hotel near the River Liffey.",
+      "latitude": 53.3478,
+      "longitude": -6.2615,
+      "ratings": "4.5",
+      "reviewCount": 500
+    },
+    {
+      "name": "The Church Cafe Bar & Restaurant",
+      "type": "restaurant",
+      "description": "Unique dining experience in a converted church.",
+      "latitude": 53.3441,
+      "longitude": -6.2632,
+      "ratings": "4.5",
+      "reviewCount": 300
+    },
+    {
+      "name": "The Science Gallery",
+      "type": "tourist",
+      "description": "Interactive science exhibits.",
+      "latitude": 53.3431,
+      "longitude": -6.2532,
+      "ratings": "4.4",
+      "reviewCount": 600
+    },
+    {
+      "name": "The Alex Dublin",
+      "type": "hotel",
+      "description": "Stylish hotel in the city center.",
+      "latitude": 53.3398,
+      "longitude": -6.2494,
+      "ratings": "4.6",
+      "reviewCount": 700
+    },
+    {
+      "name": "The Shelbourne",
+      "type": "hotel",
+      "description": "Luxury hotel in St. Stephen's Green.",
+      "latitude": 53.3406,
+      "longitude": -6.2562,
+      "ratings": "4.8",
+      "reviewCount": 500
+    },
+    {
+      "name": "The Woollen Mills",
+      "type": "restaurant",
+      "description": "Traditional Irish food in a casual setting.",
+      "latitude": 53.3478,
+      "longitude": -6.2615,
+      "ratings": "4.4",
+      "reviewCount": 400
+    },
+    {
+      "name": "Trinity College",
+      "type": "tourist",
+      "description": "Home to the Book of Kells.",
+      "latitude": 53.3432,
+      "longitude": -6.2538,
+      "ratings": "2.4",
+      "reviewCount": 2000
+    },
+    {
+      "name": "The Shelbourne",
+      "type": "hotel",
+      "description": "Luxury hotel in St. Stephen's Green.",
+      "latitude": 53.3406,
+      "longitude": -6.2562,
+      "ratings": "3.4",
+      "reviewCount": 500
+    },
+    {
+      "name": "The Woollen Mills",
+      "type": "restaurant",
+      "description": "Traditional Irish food in a casual setting.",
+      "latitude": 53.3478,
+      "longitude": -6.2615,
+      "ratings": "3.5",
+      "reviewCount": 400
+    },
+    {
+      "name": "Guinness Storehouse",
+      "type": "tourist",
+      "description": "Learn about the history of Guinness.",
+      "latitude": 53.3419,
+      "longitude": -6.2865,
+      "ratings": "4.7",
+      "reviewCount": 3000
+    },
+    {
+      "name": "The Morrison Hotel",
+      "type": "hotel",
+      "description": "Stylish hotel near the River Liffey.",
+      "latitude": 53.3478,
+      "longitude": -6.2615,
+      "ratings": "4.5",
+      "reviewCount": 500
+    },
+    {
+      "name": "The Church Cafe Bar & Restaurant",
+      "type": "restaurant",
+      "description": "Unique dining experience in a converted church.",
+      "latitude": 53.3441,
+      "longitude": -6.2632,
+      "ratings": "2.6",
+      "reviewCount": 300
+    },
+    {
+      "name": "The Science Gallery",
+      "type": "tourist",
+      "description": "Interactive science exhibits.",
+      "latitude": 53.3431,
+      "longitude": -6.2532,
+      "ratings": "3.5",
+      "reviewCount": 600
+    },
+    {
+      "name": "The Alex Dublin",
+      "type": "hotel",
+      "description": "Stylish hotel in the city center.",
+      "latitude": 53.3398,
+      "longitude": -6.2494,
+      "ratings": "3.5",
+      "reviewCount": 700
+    },
+    {
+      "name": "The Shelbourne",
+      "type": "hotel",
+      "description": "Luxury hotel in St. Stephen's Green.",
+      "latitude": 53.3406,
+      "longitude": -6.2562,
+      "ratings": "3.1",
+      "reviewCount": 500
+    },
+    {
+      "name": "The Woollen Mills",
+      "type": "restaurant",
+      "description": "Traditional Irish food in a casual setting.",
+      "latitude": 53.3478,
+      "longitude": -6.2615,
+      "ratings": "4.4",
+      "reviewCount": 400
+    },
+    {
+      "name": "Trinity College",
+      "type": "tourist",
+      "description": "Home to the Book of Kells.",
+      "latitude": 53.3432,
+      "longitude": -6.2538,
+      "ratings": "2.4",
+      "reviewCount": 2000
+    },
+    {
+      "name": "Beaumont Hospital",
+      "type": "hospital",
+      "latitude": 53.3701,
+      "longitude": -6.2275,
+      "description": "Major teaching hospital in Dublin.",
+      "ratings": "4.2",
+      "reviewCount": 500
+    },
+    {
+      "name": "Tallaght Hospital",
+      "type": "hospital",
+      "latitude": 53.2907,
+      "longitude": -6.3723,
+      "description": "Teaching hospital in South Dublin.",
+      "ratings": "4.0",
+      "reviewCount": 600
+    },
+    {
+      "name": "Clonsilla Village",
+      "type": "village",
+      "latitude": 53.4000,
+      "longitude": -6.4000,
+      "description": "A quaint village with local shops and cafes.",
+      "ratings": "2.0",
+      "reviewCount": 100
+    },
+    {
+      "name": "Dun Laoghaire",
+      "type": "village",
+      "latitude": 53.2969,
+      "longitude": -6.1189,
+      "description": "Coastal town with a marina and pier.",
+      "ratings": "2.6",
+      "reviewCount": 300
+    },
+    {
+      "name": "Howth",
+      "type": "village",
+      "latitude": 53.3881,
+      "longitude": -6.0652,
+      "description": "Fishing village with stunning coastal views.",
+      "ratings": "4.8",
+      "reviewCount": 800
+    },
+    {
+      "name": "Malahide",
+      "type": "village",
+      "latitude": 53.4220,
+      "longitude": -6.1130,
+      "description": "Charming village with a castle and gardens.",
+      "ratings": "3.0",
+      "reviewCount": 600
+    },
+    {
+      "name": "Rathmines",
+      "type": "village",
+      "latitude": 53.3230,
+      "longitude": -6.2590,
+      "description": "Residential area with a vibrant community.",
+      "ratings": "3.5",
+      "reviewCount": 200
+    }
+  ]
+  

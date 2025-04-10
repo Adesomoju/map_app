@@ -1,0 +1,123 @@
+  .filter-bar {
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+  }
+  
+  input[type="text"] {
+    padding: 0.5rem;
+    font-size: 0.8rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    width: 400px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  input[type="text"]:focus {
+    outline: none;
+    border-color: #33485e66;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+  }
+  
+  input[type="text"]::placeholder {
+    color: #777;
+  }
+  
+  select {
+    padding: 0.75rem;
+    font-size: 0.8rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    width: 100%;
+    max-width: 200px;
+    background-color: #fff;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  select:focus {
+    outline: none;
+    border-color: #33485e66;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+  }
+  
+  option {
+    padding: 0.5rem;
+    font-family: "Albert Sans", sans-serif;
+    font-weight: 500;
+    font-size: 0.8rem;
+  }
+  
+  .distance-info {
+    font-weight: bold;
+    margin: 0.5rem 0;
+  }
+
+
+  .map-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+  }
+  
+  google-map {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+  }
+  
+  .overlay-buttons {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 10;
+    background: #18033f61;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .mt-1{
+    margin-top: 0.6rem;
+  }
+
+  .mr-6{
+    margin-right: 6px !important;
+  }
+
+  .ml-6{
+    margin-left: 6px !important;
+  }
+  
+  .overlay-buttons select,
+  .overlay-buttons button {
+    padding: 5px 10px;
+  }
+
+  .w-270{
+    width: 270px !important;
+  }
+
+.img-span{
+  display: flex;
+  align-items: center;
+  margin: 5px 0;
+  font-weight: 600;
+  color: black;
+}
+
+.rating-stars {
+  display: flex;
+  align-items: center;
+  margin: 7px 0;
+
+  .star-icon {
+    width: 15px;
+    height: 15px;
+    margin-right: 2px;
+  }
+}
