@@ -5,6 +5,7 @@ import { GoogleMapsModule, GoogleMap, MapInfoWindow, MapMarker } from '@angular/
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import placesData from '../../../assets/data/places.json';
 
 declare const google: any;
 
@@ -40,16 +41,17 @@ export class MapComponent implements OnInit {
   distanceText: string = '';
   directionsRenderer: any;
 
-  constructor(
-    private readonly place: PlaceService
-  ) { }
+  constructor() { }
 
 
   ngOnInit() {
-    this.place.getPlaces().subscribe(data => {
-      this.places = data;
-      this.filterPlaces();
-    });
+    const converted = (placesData as any[]).map(p => ({
+      ...p,
+      ratings: parseFloat(p.ratings)
+    }));
+  
+    this.places = converted;
+    this.filterPlaces();
   }
 
   filterPlaces() {
