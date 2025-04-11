@@ -1,28 +1,35 @@
 <div class="map-container at-font">
 
+  <!-- Map loading spinner -->
+  <div class="loading-spinner" [ngClass]="loadingClass" *ngIf="!googleMapsReady">
+    <img src="/assets/images/anSpinner.gif" alt="Loading..." />
+  </div>
+
+  <!-- Google Map component with markers for each place -->
   <google-map *ngIf="googleMapsReady" height="100%" width="100%" [center]="center" [zoom]="zoom">
     <map-marker *ngFor="let place of filteredPlaces" [position]="{ lat: place.latitude, lng: place.longitude }"
       [title]="place.name" (mapClick)="openInfoWindow(marker, place)" #marker="mapMarker"></map-marker>
 
+    <!-- Info window for the selected place -->
     <map-info-window>
-      <div class="at-font w-270" *ngIf="selectedPlace">
+      <section class="info-window-card text-center" *ngIf="selectedPlace">
         <div class="font-md text-color-sec">{{ selectedPlace.name }}</div>
         <div class="font-sm text-color-pry">
 
-          <span class="img-span" *ngIf="selectedPlace.type === 'hotel'"> <img class="icon-size mr-6"
+          <span class="img-span center-flex" *ngIf="selectedPlace.type === 'hotel'"> <img class="icon-size mr-6"
               src="/assets/images/icons/atHotel.svg" alt="hotel"> (Hotel)</span>
-          <span class="img-span" *ngIf="selectedPlace.type === 'restaurant'"> <img class="icon-size mr-6"
+          <span class="img-span center-flex" *ngIf="selectedPlace.type === 'restaurant'"> <img class="icon-size mr-6"
               src="/assets/images/icons/atRestaurant.svg" alt="restaurant"> (Restaurant)</span>
-          <span class="img-span" *ngIf="selectedPlace.type === 'tourist'"> <img class="icon-size mr-6"
+          <span class="img-span center-flex" *ngIf="selectedPlace.type === 'tourist'"> <img class="icon-size mr-6"
               src="/assets/images/icons/atTourist.svg" alt="tourist"> (Tourist Spot)</span>
-          <span class="img-span" *ngIf="selectedPlace.type === 'hospital'"> <img class="icon-size mr-6"
+          <span class="img-span center-flex" *ngIf="selectedPlace.type === 'hospital'"> <img class="icon-size mr-6"
               src="/assets/images/icons/atHospital.svg" alt="hospital"> (Hospital)</span>
-          <span class="img-span" *ngIf="selectedPlace.type === 'village'"> <img class="icon-size mr-6"
+          <span class="img-span center-flex" *ngIf="selectedPlace.type === 'village'"> <img class="icon-size mr-6"
               src="/assets/images/icons/atVillage.svg" alt="village"> (Village)</span>
         </div>
         <div class="font-sm text-color-pry">{{ selectedPlace.description }}</div>
 
-        <div class="rating-stars">
+        <div class="rating-stars center-flex">
           <div class="font-sm text-color-pry mr-6">{{ selectedPlace.ratings }}</div>
           <ng-container *ngFor="let star of getStarIcons(selectedPlace.ratings)">
             <img [src]="star" alt="star" class="star-icon" />
@@ -33,12 +40,15 @@
           <button class="pry-btn" (click)="openBookingForm(selectedPlace)">Book Now</button>
           <button class="pry-btn" (click)="drawRouteTo(selectedPlace)">Get Directions</button>
         </div>
-      </div>
+        <div *ngIf="distanceText" class="font-sm text-color-sec mt-1">
+          Location distance is {{ distanceText }}
+        </div>
+      </section>
     </map-info-window>
   </google-map>
 
-
-  <section class="overlay-buttons">
+  <!-- Overlay for the map filter -->
+  <section class="overlay-buttons" *ngIf="googleMapsReady">
     <div class="filter-bar">
       <input type="text" placeholder="search name " [(ngModel)]="searchTerm" (input)="filterPlaces()" />
 

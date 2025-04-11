@@ -62,7 +62,7 @@
     position: absolute;
     top: 20px;
     z-index: 10;
-    background: #18033f61;
+    background: #42dadb3b;
     padding: 10px;
     border-radius: 10px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
@@ -100,24 +100,101 @@
   }
 
 .img-span{
-  display: flex;
-  align-items: center;
   margin: 5px 0;
   font-weight: 600;
   color: black;
 }
 
-.rating-stars {
-  display: flex;
-  align-items: center;
-  margin: 7px 0;
+// styles for map info window
 
-  .star-icon {
-    width: 15px;
-    height: 15px;
-    margin-right: 2px;
+@keyframes fadeSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
+
+.info-window-card {
+  width: 100%;
+  max-width: 90vw;
+  padding: 12px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  animation: fadeSlideIn 0.3s ease-out;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+
+  //screen size on smaller devices
+  @media (max-width: 480px) {
+    max-width: 85vw; 
+    padding: 10px;    
+  }
+    
+  @media (max-width: 320px) {
+    max-width: 80vw;  //Further adjust width for very small screens
+  }
+}
+
+
+.info-window-card .rating-stars {
+  margin-top: 6px;
+}
+
+.info-window-card img.star-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 2px;
+}
+
+.info-window-card button.pry-btn {
+  margin-top: 8px;
+  margin-right: 6px;
+  padding: 6px 12px;
+  font-size: 14px;
+  background-color: #210d47;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease-in-out;
+}
+
+.info-window-card button.pry-btn:hover {
+  transform: scale(1.05);
+  background-color: #18033f8f;
+}
+
+/* Style for the loading spinner */
+.loading-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out; /* Smooth fade-out transition */
+  visibility: visible;
+
+  &.hidden {
+    opacity: 0;
+    visibility: hidden; /* Hide the spinner after map is ready */
+  }
+}
+
+
+
+// responsive styles for smaller screens
 
 @media (max-width: 768px) {
   .filter-bar {

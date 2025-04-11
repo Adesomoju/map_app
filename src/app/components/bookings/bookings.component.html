@@ -1,4 +1,4 @@
-<!-- Booking Form -->
+<!-- Booking confirmation -->
 
 <section class="booking-page" *ngIf="selectedPlace">
   <div class="booking-conf-text "> Booking Confirmation <span> <img class="w-50"
@@ -13,8 +13,7 @@
       <p class="font-sm">{{ selectedPlace.description }}</p>
     </section>
 
-
-
+    <!-- Booking Form -->
     <form #bookingForm="ngForm" (ngSubmit)="onConfirmBooking(bookingForm)" class="booking-form">
       <div class="form-group">
         <label class="" for="name">Your Name</label>

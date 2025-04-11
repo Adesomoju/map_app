@@ -45,8 +45,7 @@ export class MapComponent implements OnInit {
   directionsRenderer!: any;
   distanceText: any;
 
-  startPoint?: google.maps.LatLng;
-  endPoint?: google.maps.LatLng;
+  loadingClass = ''; // To handle visibility of the spinner
 
   constructor(
     private readonly placeService: PlaceService,
@@ -54,7 +53,6 @@ export class MapComponent implements OnInit {
   ) { }
 
   // This method is used to initialize the map and load the places data
-
   ngOnInit() {
     const converted = (placesData as any[]).map(p => ({
       ...p,
@@ -66,7 +64,6 @@ export class MapComponent implements OnInit {
   }
 
   // This method is used to initialize the Google Maps API 
-
   ngAfterViewInit() {
     // Only load Google Maps API after view initialization and check if `window` is available
     if (typeof window !== 'undefined') {
@@ -77,13 +74,12 @@ export class MapComponent implements OnInit {
       });
 
       this.loader.load().then(() => {
-        // console.log('Google Maps API loaded');
         this.googleMapsReady = true;
+        this.loadingClass = 'hidden'; // Hide spinner once maps are ready
 
         // Initialize directions service and renderer once the Google Maps API is ready
         this.directionsService = new google.maps.DirectionsService();
         this.directionsRenderer = new google.maps.DirectionsRenderer();
-        // this.directionsRenderer.setMap(this.map.googleMap); // Make sure map instance is available
 
         // Wait until the map view is fully available
         setTimeout(() => {
@@ -102,7 +98,6 @@ export class MapComponent implements OnInit {
 
   // This method is used to filter the places based on selected type, search term and rating
   // It updates the filteredPlaces array based on the selected criteria
-
   filterPlaces() {
     this.filteredPlaces = this.places.filter(p => {
       const matchesType = this.selectedType === 'all' || p.type === this.selectedType;
@@ -117,28 +112,22 @@ export class MapComponent implements OnInit {
 
 
   // This method is used to set the map center based on the selected place
-
   openInfoWindow(marker: MapMarker, place: Place) {
-
     if (this.directionsRenderer) {
       const rendererToClear = this.directionsRenderer;
 
       // If there is a route to clear, do it with a slight delay
       setTimeout(() => {
-        // Clear the route safely
         if (rendererToClear) {
           rendererToClear.setMap(null); // Clears the route
         }
         this.directionsRenderer = new google.maps.DirectionsRenderer(); // Recreate the renderer to avoid null references
         this.directionsRenderer.setMap(this.map.googleMap); // Associate the new renderer with the map
         this.distanceText = ''; // Clear the distance info
-        this.startPoint = undefined; // Reset startPoint
-        this.endPoint = undefined; // Reset endPoint
       }, 300); // Delay to smoothen the experience
     }
 
-
-
+    // Set the map center to the selected place
     this.selectedPlace = place;
     this.infoWindow.open(marker);
   }
@@ -146,29 +135,22 @@ export class MapComponent implements OnInit {
 
   // This method is used to get the star icons based on the rating
   // It returns an array of star icon paths
-
   getStarIcons(rating: number): string[] {
     const fullStars = Math.floor(rating);
     const halfStar = rating % 1 >= 0.25 && rating % 1 < 0.75;
-
     const stars: string[] = [];
-
     for (let i = 0; i < fullStars; i++) {
       stars.push('/assets/images/icons/atFullstar.png');
     }
-
     if (halfStar) {
       stars.push('/assets/images/icons/atHalfstar.png');
     }
-
     return stars;
   }
 
   // Booking logic
   // This method is called when the user clicks on the "Book Now" button in the info window
-
   openBookingForm(place: Place) {
-    console.log('Booking for:', place);
     if (this.placeService) {
       this.placeService.setSelectedPlace(place);
       this.router.navigate(['/booking']);
@@ -180,46 +162,98 @@ export class MapComponent implements OnInit {
 
 
   // Directions and routing logic
-
   drawRouteTo(destination: Place) {
+
+    if (!navigator.geolocation) {
+      alert('Geolocation is not supported by your browser.');
+      return;
+    }
+
+    // Check if the user has granted permission to access location
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(position => {
-        const origin = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        };
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          const origin = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
 
-        const destinationLatLng = {
-          lat: destination.latitude,
-          lng: destination.longitude
-        };
+          const destinationLatLng = {
+            lat: destination.latitude,
+            lng: destination.longitude
+          };
 
-        const request = {
-          origin: origin,
-          destination: destinationLatLng,
-          travelMode: google.maps.TravelMode.DRIVING
-        };
+          const request = {
+            origin: origin,
+            destination: destinationLatLng,
+            travelMode: google.maps.TravelMode.DRIVING
+          };
 
-        // Ensure the directionsService is initialized before using it
-        if (this.directionsService && this.directionsRenderer) {
-          this.directionsService.route(request, (result: any, status: string) => {
-            if (status === 'OK') {
-              this.directionsRenderer.setDirections(result); // Draw the route
-              this.distanceText = result.routes[0].legs[0].distance.text;
-            } else {
-              console.error('Directions request failed due to ' + status);
-            }
-          });
-        } else {
-          console.error('DirectionsService or DirectionsRenderer not initialized');
+          // check if directionsService and directionsRenderer are initialized
+          if (this.directionsService && this.directionsRenderer) {
+            this.directionsService.route(request, (result: any, status: string) => {
+              if (status === 'OK') {
+                this.directionsRenderer.setDirections(result);
+                this.distanceText = result.routes[0].legs[0].distance.text;
+
+
+                // Pan and zoom the map to user's location
+                if (this.map && this.map.googleMap) {
+                  this.map.googleMap.panTo(origin);
+                  this.map.googleMap.setZoom(15);
+                }
+
+                //show user's location
+                new google.maps.Marker({
+                  position: origin,
+                  map: this.map.googleMap,
+                  title: 'You are here',
+                  icon: {
+                    path: google.maps.SymbolPath.CIRCLE,
+                    scale: 7,
+                    fillColor: '#4285F4',
+                    fillOpacity: 1,
+                    strokeWeight: 2,
+                    strokeColor: 'white'
+                  }
+                });
+
+              } else {
+                console.error('Directions request failed due to ' + status);
+              }
+            });
+          } else {
+            console.error('DirectionsService or DirectionsRenderer not initialized');
+          }
+        },
+        error => { // Handle geolocation errors
+          switch (error.code) {
+            case error.PERMISSION_DENIED:
+              console.error("User denied the request for Geolocation.");
+              break;
+            case error.POSITION_UNAVAILABLE:
+              console.error("Location information is unavailable.");
+              break;
+            case error.TIMEOUT:
+              console.error("The request to get user location timed out.");
+              break;
+            default:
+              console.error("An unknown error occurred.");
+              break;
+          }
+        },
+        { // Geolocation options
+          // Enable high accuracy for better location tracking
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 0
         }
-      }, error => {
-        console.error('Geolocation failed: ', error);
-      });
+      );
     } else {
       console.error('Geolocation is not supported by this browser.');
     }
   }
+
 
 
 
