@@ -1,6 +1,6 @@
 <div class="map-container at-font">
 
-  <google-map
+  <google-map *ngIf="googleMapsReady"
   height="100%"
   width="100%"
   [center]="center"

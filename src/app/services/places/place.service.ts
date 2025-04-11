@@ -1,18 +1,23 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject  } from 'rxjs';
 import { Place } from '../../model/places.model';
-import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PlaceService {
 
-  constructor(
-    private readonly http: HttpClient
-  ) { }
+  private readonly selectedPlaceSubject = new BehaviorSubject<Place | null>(null);
+  selectedPlace$ = this.selectedPlaceSubject.asObservable();
 
-  getPlaces(): Observable<Place[]> {
-    return this.http.get<Place[]>('assets/data/places.json');
+  constructor() { }
+
+  setSelectedPlace(place: Place) {
+    this.selectedPlaceSubject.next(place);
   }
+
+  clearSelectedPlace() {
+    this.selectedPlaceSubject.next(null);
+  }
+
 }

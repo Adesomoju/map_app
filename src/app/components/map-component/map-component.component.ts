@@ -1,13 +1,14 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Place } from '../../model/places.model';
-import { PlaceService } from '../../services/places/place.service';
+import { Loader } from '@googlemaps/js-api-loader';
 import { GoogleMapsModule, GoogleMap, MapInfoWindow, MapMarker } from '@angular/google-maps';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import placesData from '../../../assets/data/places.json';
+import { environment } from '../../../environments/environment';
+import { PlaceService } from '../../services/places/place.service';
 
-declare const google: any;
 
 @Component({
   selector: 'app-map-component',
@@ -27,7 +28,7 @@ export class MapComponent implements OnInit {
   @ViewChild(GoogleMap, { static: false }) map!: GoogleMap;
 
   center = { lat: 53.3498, lng: -6.2603 }; // Dublin as example
-  zoom = 12;
+  zoom = 14;
 
   places: Place[] = [];
   filteredPlaces: Place[] = [];
@@ -36,12 +37,18 @@ export class MapComponent implements OnInit {
   searchTerm: string = '';
   selectedPlace?: Place;
 
+  loader!: Loader;
+  googleMapsReady = false;
+
   startPoint?: Place;
   endPoint?: Place;
   distanceText: string = '';
   directionsRenderer: any;
 
-  constructor() { }
+  constructor( 
+    private readonly placeService: PlaceService,
+    private readonly router: Router
+  ) {  }
 
 
   ngOnInit() {
@@ -49,13 +56,32 @@ export class MapComponent implements OnInit {
       ...p,
       ratings: parseFloat(p.ratings)
     }));
-  
+
     this.places = converted;
     this.filterPlaces();
   }
 
+  ngAfterViewInit() {
+    // Only load Google Maps API after view initialization and check if `window` is available
+    if (typeof window !== 'undefined') {
+      this.loader = new Loader({
+        apiKey: environment.googleMapsApiKey, 
+        version: 'weekly',
+        libraries: ['places'], 
+      });
+
+      this.loader.load().then(() => {
+        // console.log('Google Maps API loaded');
+
+        this.googleMapsReady = true;
+
+      }).catch(error => {
+        console.error('Google Maps API failed to load:', error);
+      });
+    }
+  }
+
   filterPlaces() {
-  
     this.filteredPlaces = this.places.filter(p => {
       const matchesType = this.selectedType === 'all' || p.type === this.selectedType;
       const matchesSearch = this.searchTerm.trim() === '' || p.name.toLowerCase().includes(this.searchTerm.trim().toLowerCase());
@@ -65,7 +91,7 @@ export class MapComponent implements OnInit {
       );
       return matchesType && matchesSearch && matchesRating;
     });
-  
+
   }
 
   openInfoWindow(marker: MapMarker, place: Place) {
@@ -80,17 +106,17 @@ export class MapComponent implements OnInit {
   getStarIcons(rating: number): string[] {
     const fullStars = Math.floor(rating);
     const halfStar = rating % 1 >= 0.25 && rating % 1 < 0.75;
-  
+
     const stars: string[] = [];
-  
+
     for (let i = 0; i < fullStars; i++) {
       stars.push('/assets/images/icons/atFullstar.png');
     }
-  
+
     if (halfStar) {
       stars.push('/assets/images/icons/atHalfstar.png');
     }
-  
+
     return stars;
   }
 
@@ -113,7 +139,14 @@ export class MapComponent implements OnInit {
   }
 
   openBookingForm(place: Place) {
-    alert(`Booking form for ${place.name}`);
+    console.log('Booking for:', place);
+    if (this.placeService) {
+      this.placeService.setSelectedPlace(place); 
+      this.router.navigate(['/booking']);
+       // Ensure this is called correctly
+    } else {
+      console.error('BookingStateService is not available!');
+    }
   }
 
   drawRouteAndCalculate() {

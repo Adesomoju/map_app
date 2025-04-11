@@ -1,1 +1,40 @@
-<p>bookings works!</p>
+<!-- Booking Form -->
+
+<section class="booking-page" *ngIf="selectedPlace">
+  <div class="booking-conf-text "> Booking Confirmation <span> <img class="w-50"
+        src="/assets/images/icons/atConfirmation.svg" alt="booking confirmation"></span> </div>
+
+  <div class="booking-form-container">
+
+
+    <section class="text-center mb-6">
+      <div class="font-md text-color-sec">{{ selectedPlace.name }}</div>
+      <p class="font-sm">{{ selectedPlace.type }}</p>
+      <p class="font-sm">{{ selectedPlace.description }}</p>
+    </section>
+
+
+
+    <form #bookingForm="ngForm" (ngSubmit)="onConfirmBooking(bookingForm)" class="booking-form">
+      <div class="form-group">
+        <label class="" for="name">Your Name</label>
+        <input id="name" name="name" type="text" [(ngModel)]="booking.name" #name="ngModel" required
+          class="form-control" placeholder="Enter your name" />
+        <div *ngIf="name.invalid && name.touched" class="error-message">
+          Name is required.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" [(ngModel)]="booking.email" #email="ngModel" required email
+          class="form-control" placeholder="Enter your email" />
+        <div *ngIf="email.invalid && email.touched" class="error-message">
+          A valid email is required.
+        </div>
+      </div>
+
+      <button type="submit" [disabled]="bookingForm.invalid" class="pry-btn">Finalize Booking</button>
+    </form>
+  </div>
+</section>
