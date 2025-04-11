@@ -25,6 +25,7 @@ The application features:
 - A "Get Directions" feature that calculates the route from the user's current location to the selected place.
 - A responsive, mobile-friendly UI with custom info windows for each location.
 - Integrated deployment to Vercel for continuous delivery.
+- Handled memory leakage
 
 ## Key Features Implemented
 
