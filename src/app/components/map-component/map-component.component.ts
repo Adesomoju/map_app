@@ -9,6 +9,7 @@ import placesData from '../../../assets/data/places.json';
 import { environment } from '../../../environments/environment';
 import { PlaceService } from '../../services/places/place.service';
 
+declare const google: any;
 
 @Component({
   selector: 'app-map-component',
@@ -40,16 +41,19 @@ export class MapComponent implements OnInit {
   loader!: Loader;
   googleMapsReady = false;
 
-  startPoint?: Place;
-  endPoint?: Place;
-  distanceText: string = '';
-  directionsRenderer: any;
+  directionsService!: any;
+  directionsRenderer!: any;
+  distanceText: any;
 
-  constructor( 
+  startPoint?: google.maps.LatLng;
+  endPoint?: google.maps.LatLng;
+
+  constructor(
     private readonly placeService: PlaceService,
     private readonly router: Router
-  ) {  }
+  ) { }
 
+  // This method is used to initialize the map and load the places data
 
   ngOnInit() {
     const converted = (placesData as any[]).map(p => ({
@@ -61,25 +65,43 @@ export class MapComponent implements OnInit {
     this.filterPlaces();
   }
 
+  // This method is used to initialize the Google Maps API 
+
   ngAfterViewInit() {
     // Only load Google Maps API after view initialization and check if `window` is available
     if (typeof window !== 'undefined') {
       this.loader = new Loader({
-        apiKey: environment.googleMapsApiKey, 
+        apiKey: environment.googleMapsApiKey,
         version: 'weekly',
-        libraries: ['places'], 
+        libraries: ['places'],
       });
 
       this.loader.load().then(() => {
         // console.log('Google Maps API loaded');
-
         this.googleMapsReady = true;
+
+        // Initialize directions service and renderer once the Google Maps API is ready
+        this.directionsService = new google.maps.DirectionsService();
+        this.directionsRenderer = new google.maps.DirectionsRenderer();
+        // this.directionsRenderer.setMap(this.map.googleMap); // Make sure map instance is available
+
+        // Wait until the map view is fully available
+        setTimeout(() => {
+          if (this.map && this.map.googleMap) {
+            this.directionsRenderer.setMap(this.map.googleMap);
+          } else {
+            console.warn('Google Map is not ready yet');
+          }
+        }, 0);
 
       }).catch(error => {
         console.error('Google Maps API failed to load:', error);
       });
     }
   }
+
+  // This method is used to filter the places based on selected type, search term and rating
+  // It updates the filteredPlaces array based on the selected criteria
 
   filterPlaces() {
     this.filteredPlaces = this.places.filter(p => {
@@ -91,17 +113,39 @@ export class MapComponent implements OnInit {
       );
       return matchesType && matchesSearch && matchesRating;
     });
-
   }
 
+
+  // This method is used to set the map center based on the selected place
+
   openInfoWindow(marker: MapMarker, place: Place) {
+
+    if (this.directionsRenderer) {
+      const rendererToClear = this.directionsRenderer;
+
+      // If there is a route to clear, do it with a slight delay
+      setTimeout(() => {
+        // Clear the route safely
+        if (rendererToClear) {
+          rendererToClear.setMap(null); // Clears the route
+        }
+        this.directionsRenderer = new google.maps.DirectionsRenderer(); // Recreate the renderer to avoid null references
+        this.directionsRenderer.setMap(this.map.googleMap); // Associate the new renderer with the map
+        this.distanceText = ''; // Clear the distance info
+        this.startPoint = undefined; // Reset startPoint
+        this.endPoint = undefined; // Reset endPoint
+      }, 300); // Delay to smoothen the experience
+    }
+
+
+
     this.selectedPlace = place;
     this.infoWindow.open(marker);
   }
 
-  selectForRouting(place: Place) {
-    this.startPoint = place;
-  }
+
+  // This method is used to get the star icons based on the rating
+  // It returns an array of star icon paths
 
   getStarIcons(rating: number): string[] {
     const fullStars = Math.floor(rating);
@@ -120,69 +164,63 @@ export class MapComponent implements OnInit {
     return stars;
   }
 
-  onTypeChange(event: any, type: any) {
-    console.log('Selected type:', type);
-    console.log('Selected type:', event.target.value);
-    if (type === 'rating') {
-      this.selectedRating = event.target.value;
-      console.log('Selected rating:', this.selectedRating);
-      this.filterPlaces();
-    }
-    if (type === 'type') {
-      this.selectedType = event.target.value;
-      this.filterPlaces();
-    }
-  }
-
-  navigateToDetail(place: Place) {
-    console.log('Navigating to:', place);
-  }
+  // Booking logic
+  // This method is called when the user clicks on the "Book Now" button in the info window
 
   openBookingForm(place: Place) {
     console.log('Booking for:', place);
     if (this.placeService) {
-      this.placeService.setSelectedPlace(place); 
+      this.placeService.setSelectedPlace(place);
       this.router.navigate(['/booking']);
-       // Ensure this is called correctly
+      // Ensure this is called correctly
     } else {
       console.error('BookingStateService is not available!');
     }
   }
 
-  drawRouteAndCalculate() {
-    const directionsService = new google.maps.DirectionsService();
-    this.directionsRenderer = new google.maps.DirectionsRenderer();
 
-    const mapInstance = this.map.googleMap;
-    this.directionsRenderer.setMap(mapInstance);
+  // Directions and routing logic
 
-    const request = {
-      origin: { lat: this.startPoint!.latitude, lng: this.startPoint!.longitude },
-      destination: { lat: this.endPoint!.latitude, lng: this.endPoint!.longitude },
-      travelMode: google.maps.TravelMode.DRIVING
-    };
+  drawRouteTo(destination: Place) {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(position => {
+        const origin = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
 
-    directionsService.route(request, (result: any, status: any) => {
-      console.log('Route result:', result);
-      console.log('Route status:', status);
-      if (status === 'OK') {
-        this.directionsRenderer.setDirections(result);
-        this.distanceText = result.routes[0].legs[0].distance.text;
-      } else {
-        console.error('Route calculation failed:', status);
-      }
-    });
-  }
+        const destinationLatLng = {
+          lat: destination.latitude,
+          lng: destination.longitude
+        };
 
-  getDistanceTo(place: Place) {
-    if (!this.startPoint) {
-      alert('Please select a start point first.');
-      return;
+        const request = {
+          origin: origin,
+          destination: destinationLatLng,
+          travelMode: google.maps.TravelMode.DRIVING
+        };
+
+        // Ensure the directionsService is initialized before using it
+        if (this.directionsService && this.directionsRenderer) {
+          this.directionsService.route(request, (result: any, status: string) => {
+            if (status === 'OK') {
+              this.directionsRenderer.setDirections(result); // Draw the route
+              this.distanceText = result.routes[0].legs[0].distance.text;
+            } else {
+              console.error('Directions request failed due to ' + status);
+            }
+          });
+        } else {
+          console.error('DirectionsService or DirectionsRenderer not initialized');
+        }
+      }, error => {
+        console.error('Geolocation failed: ', error);
+      });
+    } else {
+      console.error('Geolocation is not supported by this browser.');
     }
-
-    this.endPoint = place;
-    this.drawRouteAndCalculate();
   }
+
 
 
 

@@ -29,7 +29,7 @@ export class BookingsComponent implements OnInit, OnDestroy {
     this.placeService.selectedPlace$.subscribe((place) => {
       this.selectedPlace = place;
       if (!place) {
-        // Optional: redirect back if no place is selected
+        // redirect back if no place is selected
         this.router.navigate(['/map']);
       }
     });
